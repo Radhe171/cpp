@@ -1,34 +1,96 @@
 #include <iostream>
-using namespace std;
+    using namespace std;
 
-class Student {
-private:
-    string name;
-    int roll;
-    float marks;
+    // ================= NODE =================
+    class Node
+    {
+    public:
+        int data;
+        Node *next;
 
-public:
-    // Function to input student details
-    void input() {
-        cout << "Enter Name: ";
-        cin >> name;
-        cout << "Enter Roll Number: ";
-        cin >> roll;
-        cout << "Enter Marks: ";
-        cin >> marks;
+        Node(int val)
+        {
+            data = val;
+            next = nullptr;
+        }
+    };
+
+    // ================= SIZE =================
+
+    int getSize(Node *head)
+    {
+        int count = 0;
+        Node *temp = head;
+
+        while (temp != nullptr)
+        {
+            count++;
+            temp = temp->next;
+        }
+
+        return count;
     }
 
-    // Function to display student details
-    void display() {
-        cout << "\n--- Student Details ---\n";
-        cout << "Name: " << name << endl;
-        cout << "Roll Number: " << roll << endl;
-        cout << "Marks: " << marks << endl;
+    // ================= INSERT =================
+
+    void insertAtHead(Node *&head, int val)
+    {
+        Node *newNode = new Node(val);
+        newNode->next = head;
+        head = newNode;
     }
-};
 
-int main() {
-    Student s;
+    void insertAtTail(Node *&head, int val)
+    {
+        if (head == nullptr)
+        {
+            insertAtHead(head, val);
+            return;
+        }
 
-    s.input();
-}
+        Node *newNode = new Node(val);
+
+        Node *temp = head;
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = newNode;
+    }
+
+    void insertAtPosition(Node *&head, int pos, int val)
+    {
+        int size = getSize(head);
+
+        if (pos < 1 || pos > size + 1)
+        {
+            cout << "Invalid position\n";
+            return;
+        }
+
+        if (pos == 1)
+        {
+            insertAtHead(head, val);
+            return;
+        }
+
+        if (pos == size + 1)
+        {
+            insertAtTail(head, val);
+            return;
+        }
+
+        Node *temp = head;
+        int i = 1;
+
+        while (i < pos - 1)
+        {
+            temp = temp->next;
+            i++;
+        }
+
+        Node *newNode = new Node(val);
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
